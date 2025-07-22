@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "com.example.datasimulator.app-mergeDebugResources-34:/layout/activity_main.xml",
+        "source": "com.example.datasimulator.app-main-37:/layout/activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-mergeDebugResources-34:\\layout\\item_data.xml",
+        "source": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-main-37:\\layout\\item_data.xml"
+    },
+    {
+        "merged": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-mergeDebugResources-34:\\layout\\activity_main.xml",
+        "source": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-main-37:\\layout\\activity_main.xml"
+    }
+]

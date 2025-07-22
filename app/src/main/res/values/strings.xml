@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Respira</string>
+    <string name="send_data">Enviar Datos</string>
+    <string name="view_data">Ver Datos</string>
+    <string name="clear_data">Limpiar Datos</string>
+    <string name="data_sent">Datos enviados exitosamente!</string>
+    <string name="data_cleared">Datos eliminados</string>
+    <string name="no_data">No hay datos para mostrar</string>
+    <string name="timestamp">Timestamp</string>
+    <string name="value">Valor</string>
+    <string name="type">Tipo</string>
+    <string name="heart_rate_label">Datos de Salud</string>
+    <string name="connected">Conectado a Galaxy Watch 5</string>
+    <string name="not_connected">No conectado al reloj</string>
+    <string name="bluetooth_off_notification">No conectado al reloj: Bluetooth apagado</string>
+</resources> 

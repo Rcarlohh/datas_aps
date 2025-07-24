@@ -30,9 +30,6 @@ public final class ActivityMainBinding implements ViewBinding {
   public final LinearLayout buttonContainer;
 
   @NonNull
-  public final MaterialButton clearDataButton;
-
-  @NonNull
   public final TextView connectionStatus;
 
   @NonNull
@@ -51,6 +48,9 @@ public final class ActivityMainBinding implements ViewBinding {
   public final Button historyButton;
 
   @NonNull
+  public final MaterialButton logoutButton;
+
+  @NonNull
   public final RecyclerView recentDataRecyclerView;
 
   @NonNull
@@ -66,23 +66,23 @@ public final class ActivityMainBinding implements ViewBinding {
   public final MaterialButton viewDataButton;
 
   private ActivityMainBinding(@NonNull ConstraintLayout rootView, @NonNull Button backToMainButton,
-      @NonNull LinearLayout buttonContainer, @NonNull MaterialButton clearDataButton,
-      @NonNull TextView connectionStatus, @NonNull RecyclerView dataRecyclerView,
-      @NonNull TextView emptyText, @NonNull TextView heartRateLabel,
-      @NonNull TextView heartRateValue, @NonNull Button historyButton,
+      @NonNull LinearLayout buttonContainer, @NonNull TextView connectionStatus,
+      @NonNull RecyclerView dataRecyclerView, @NonNull TextView emptyText,
+      @NonNull TextView heartRateLabel, @NonNull TextView heartRateValue,
+      @NonNull Button historyButton, @NonNull MaterialButton logoutButton,
       @NonNull RecyclerView recentDataRecyclerView, @NonNull MaterialButton sendDataButton,
       @NonNull TextView subtitleText, @NonNull TextView titleText,
       @NonNull MaterialButton viewDataButton) {
     this.rootView = rootView;
     this.backToMainButton = backToMainButton;
     this.buttonContainer = buttonContainer;
-    this.clearDataButton = clearDataButton;
     this.connectionStatus = connectionStatus;
     this.dataRecyclerView = dataRecyclerView;
     this.emptyText = emptyText;
     this.heartRateLabel = heartRateLabel;
     this.heartRateValue = heartRateValue;
     this.historyButton = historyButton;
+    this.logoutButton = logoutButton;
     this.recentDataRecyclerView = recentDataRecyclerView;
     this.sendDataButton = sendDataButton;
     this.subtitleText = subtitleText;
@@ -129,12 +129,6 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.clearDataButton;
-      MaterialButton clearDataButton = ViewBindings.findChildViewById(rootView, id);
-      if (clearDataButton == null) {
-        break missingId;
-      }
-
       id = R.id.connectionStatus;
       TextView connectionStatus = ViewBindings.findChildViewById(rootView, id);
       if (connectionStatus == null) {
@@ -171,6 +165,12 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.logoutButton;
+      MaterialButton logoutButton = ViewBindings.findChildViewById(rootView, id);
+      if (logoutButton == null) {
+        break missingId;
+      }
+
       id = R.id.recentDataRecyclerView;
       RecyclerView recentDataRecyclerView = ViewBindings.findChildViewById(rootView, id);
       if (recentDataRecyclerView == null) {
@@ -202,8 +202,8 @@ public final class ActivityMainBinding implements ViewBinding {
       }
 
       return new ActivityMainBinding((ConstraintLayout) rootView, backToMainButton, buttonContainer,
-          clearDataButton, connectionStatus, dataRecyclerView, emptyText, heartRateLabel,
-          heartRateValue, historyButton, recentDataRecyclerView, sendDataButton, subtitleText,
+          connectionStatus, dataRecyclerView, emptyText, heartRateLabel, heartRateValue,
+          historyButton, logoutButton, recentDataRecyclerView, sendDataButton, subtitleText,
           titleText, viewDataButton);
     }
     String missingId = rootView.getResources().getResourceName(id);

@@ -1,22 +1,26 @@
 [
     {
-        "merged": "com.example.datasimulator.app-mergeDebugResources-36:/layout/activity_login.xml",
-        "source": "com.example.datasimulator.app-main-39:/layout/activity_login.xml"
-    },
-    {
         "merged": "com.example.datasimulator.app-mergeDebugResources-36:/layout/activity_main.xml",
         "source": "com.example.datasimulator.app-main-39:/layout/activity_main.xml"
     },
     {
-        "merged": "com.example.datasimulator.app-mergeDebugResources-36:/layout/activity_register.xml",
-        "source": "com.example.datasimulator.app-main-39:/layout/activity_register.xml"
+        "merged": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-mergeDebugResources-36:\\layout\\activity_main.xml",
+        "source": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-main-39:\\layout\\activity_main.xml"
     },
     {
-        "merged": "com.example.datasimulator.app-mergeDebugResources-36:/layout/main_menu.xml",
-        "source": "com.example.datasimulator.app-main-39:/layout/main_menu.xml"
+        "merged": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-mergeDebugResources-36:\\layout\\item_data.xml",
+        "source": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-main-39:\\layout\\item_data.xml"
     },
     {
-        "merged": "com.example.datasimulator.app-mergeDebugResources-36:/layout/item_data.xml",
-        "source": "com.example.datasimulator.app-main-39:/layout/item_data.xml"
+        "merged": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-mergeDebugResources-36:\\layout\\activity_login.xml",
+        "source": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-main-39:\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-mergeDebugResources-36:\\layout\\main_menu.xml",
+        "source": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-main-39:\\layout\\main_menu.xml"
+    },
+    {
+        "merged": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-mergeDebugResources-36:\\layout\\activity_register.xml",
+        "source": "C:\\Users\\range\\.gradle\\daemon\\9.0-milestone-1\\com.example.datasimulator.app-main-39:\\layout\\activity_register.xml"
     }
 ]

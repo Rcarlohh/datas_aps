@@ -20,12 +20,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Botón de cerrar sesión en la esquina superior derecha -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="Cerrar Sesión"
+        android:textSize="12sp"
+        app:backgroundTint="@color/icon_red"
+        app:cornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/subtitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-
         android:textColor="@color/text_secondary"
         android:textSize="0sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,11 +85,12 @@
         android:id="@+id/recentDataRecyclerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@color/card_background"
-        android:padding="8dp"
+        android:padding="12dp"
+        android:maxHeight="300dp"
         app:layout_constraintTop_toBottomOf="@id/connectionStatus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -116,15 +130,7 @@
             app:iconGravity="textStart"
             app:iconTint="@color/icon_green" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/clearDataButton"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="@string/clear_data"
-            android:textSize="18sp"
-            app:icon="@android:drawable/ic_menu_delete"
-            app:iconGravity="textStart"
-            app:iconTint="@color/icon_red" />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -177,4 +183,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout> 
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,13 +20,10 @@ color text_primary
 color text_secondary
 color white
 drawable icon_background
-id action_logout
-id action_profile
 id appTitleText
 id backToLoginButton
 id backToMainButton
 id buttonContainer
-id clearDataButton
 id confirmPasswordEditText
 id confirmPasswordInputLayout
 id connectionStatus
@@ -41,10 +38,12 @@ id heartRateValue
 id historyButton
 id loginButton
 id logoImageView
+id logoutButton
 id orText
 id passwordEditText
 id passwordInputLayout
 id recentDataRecyclerView
+id recentDataTitle
 id registerButton
 id registerSubtitleText
 id registerTitleText
@@ -63,7 +62,7 @@ layout activity_login
 layout activity_main
 layout activity_register
 layout item_data
-layout main_menu
+menu main_menu
 string action_logout
 string action_profile
 string already_have_account

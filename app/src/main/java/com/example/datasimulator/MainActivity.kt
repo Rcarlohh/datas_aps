@@ -11,8 +11,6 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -41,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     private val heartRateMin = 60
     private val heartRateMax = 100
     private val heartRateInterval: Long = 2000 // ms
+    private val dataUpdateInterval: Long = 3000 // ms - actualizar datos cada 3 segundos
     private val CHANNEL_ID = "bluetooth_status_channel"
 
     // Variables de usuario
@@ -121,31 +120,12 @@ class MainActivity : AppCompatActivity() {
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         updateBluetoothStatus(bluetoothAdapter?.isEnabled == true)
 
-        // Iniciar simulación de ritmo cardiaco
-        startHeartRateSimulation()
+        // Iniciar simulación continua de datos
+        startContinuousDataSimulation()
 
         // Botón para regresar a la pantalla principal
         binding.backToMainButton.setOnClickListener {
             showMainScreen()
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_logout -> {
-                logout()
-                true
-            }
-            R.id.action_profile -> {
-                showUserProfile()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -159,25 +139,6 @@ class MainActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
-    }
-
-    private fun showUserProfile() {
-        val sb = StringBuilder()
-        sb.append("Perfil de Usuario\n\n")
-        sb.append("Nombre: ${currentUser?.fullName}\n")
-        sb.append("Usuario: ${currentUser?.username}\n")
-        sb.append("Email: ${currentUser?.email}\n")
-        sb.append("Registrado: ${formatDate(currentUser?.createdAt ?: 0)}\n")
-        sb.append("Datos guardados: ${databaseHelper.getDataCount(currentUserId)}")
-
-        binding.heartRateLabel.text = "Mi Perfil"
-        binding.heartRateValue.text = sb.toString()
-        binding.heartRateLabel.visibility = View.VISIBLE
-        binding.heartRateValue.visibility = View.VISIBLE
-        binding.dataRecyclerView.visibility = View.GONE
-        binding.recentDataRecyclerView.visibility = View.GONE
-        binding.connectionStatus.visibility = View.GONE
-        binding.backToMainButton.visibility = View.VISIBLE
     }
 
     private fun setupRecyclerView() {
@@ -224,9 +185,12 @@ class MainActivity : AppCompatActivity() {
             }
             sb.append("$type: $formatted\n")
         }
-        binding.heartRateLabel.text = "Datos de Salud"
+        binding.heartRateLabel.text = "Datos de Salud en Tiempo Real"
         binding.heartRateValue.text = sb.toString().trim()
         binding.connectionStatus.visibility = View.VISIBLE
+
+        // Mostrar datos recientes automáticamente
+        loadRecentData()
     }
 
     private fun saveSimulatedDataToDB() {
@@ -307,6 +271,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupButtons() {
+        // Botón de cerrar sesión
+        binding.logoutButton.setOnClickListener {
+            logout()
+        }
+
         binding.sendDataButton.setOnClickListener {
             simulateAllData()
             showSimulatedBlock()
@@ -319,10 +288,6 @@ class MainActivity : AppCompatActivity() {
         binding.viewDataButton.setOnClickListener {
             showDataTable()
             startAutoUpdateTable()
-        }
-
-        binding.clearDataButton.setOnClickListener {
-            clearAllData()
         }
 
         binding.historyButton?.setOnClickListener {
@@ -371,7 +336,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showMainScreen() {
         binding.dataRecyclerView.visibility = View.GONE
-        binding.recentDataRecyclerView.visibility = View.GONE
+        binding.recentDataRecyclerView.visibility = View.VISIBLE
         binding.heartRateLabel.visibility = View.VISIBLE
         binding.heartRateValue.visibility = View.VISIBLE
         binding.connectionStatus.visibility = View.VISIBLE
@@ -406,8 +371,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadRecentData() {
-        val dataList = databaseHelper.getAllData(currentUserId)
-        val recentList = if (dataList.size > 3) dataList.takeLast(3).reversed() else dataList.reversed()
+        val dataList = databaseHelper.getAllData(currentUserId).filter { it.type in dataTypes }
+        val recentList = if (dataList.size > 5) dataList.takeLast(5).reversed() else dataList.reversed()
         recentDataAdapter.updateData(recentList)
         binding.recentDataRecyclerView.visibility = if (recentList.isEmpty()) View.GONE else View.VISIBLE
     }
@@ -415,15 +380,24 @@ class MainActivity : AppCompatActivity() {
     private fun clearAllData() {
         databaseHelper.clearAllData(currentUserId)
         Toast.makeText(this, getString(R.string.data_cleared), Toast.LENGTH_SHORT).show()
-        loadData()
         loadRecentData()
     }
 
-    private fun startHeartRateSimulation() {
+    private fun startContinuousDataSimulation() {
         handler.post(object : Runnable {
             override fun run() {
-                val simulatedHeartRate = Random.nextInt(heartRateMin, heartRateMax + 1)
-                handler.postDelayed(this, heartRateInterval)
+                // Actualizar datos simulados
+                simulateAllData()
+
+                // Mostrar en pantalla
+                showSimulatedBlock()
+
+                // Guardar en base de datos automáticamente
+                saveSimulatedDataToDB()
+                saveMedicionToDB()
+
+                // Repetir cada 3 segundos
+                handler.postDelayed(this, dataUpdateInterval)
             }
         })
     }

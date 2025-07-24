@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.datasimulator.app-mergeDebugResources-33:/values-h320dp-port-v13/values-h320dp-port-v13.xml",
+            "outputFile": "com.example.datasimulator.app-mergeDebugResources-35:/values-h320dp-port-v13/values-h320dp-port-v13.xml",
             "map": [
                 {
                     "source": "C:\\Users\\range\\.gradle\\caches\\9.0-milestone-1\\transforms\\f250a361a93916fc27fd06bf1c0da1fd\\transformed\\material-1.11.0\\res\\values-h320dp-port-v13\\values-h320dp-port-v13.xml",

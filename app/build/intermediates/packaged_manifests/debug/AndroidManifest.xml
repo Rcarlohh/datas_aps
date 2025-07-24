@@ -18,6 +18,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <!-- Permiso para notificaciones en Android 13+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- suppress DeprecatedClassUsageInspection -->
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
     <permission
         android:name="com.example.datasimulator.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
@@ -38,8 +40,10 @@
         android:testOnly="true"
         android:theme="@style/Theme.DataSimulator"
         android:usesCleartextTraffic="true" >
+
+        <!-- Actividad de Login (actividad principal inicial) -->
         <activity
-            android:name="com.example.datasimulator.MainActivity"
+            android:name="com.example.datasimulator.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.DataSimulator" >
             <intent-filter>
@@ -47,6 +51,20 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <!-- Actividad de Registro -->
+        <activity
+            android:name="com.example.datasimulator.RegisterActivity"
+            android:exported="false"
+            android:parentActivityName="com.example.datasimulator.LoginActivity"
+            android:theme="@style/Theme.DataSimulator" />
+
+        <!-- Actividad Principal (requiere login) -->
+        <activity
+            android:name="com.example.datasimulator.MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.DataSimulator" >
         </activity>
 
         <provider

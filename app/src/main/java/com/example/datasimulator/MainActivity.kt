@@ -11,6 +11,8 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -40,6 +42,10 @@ class MainActivity : AppCompatActivity() {
     private val heartRateMax = 100
     private val heartRateInterval: Long = 2000 // ms
     private val CHANNEL_ID = "bluetooth_status_channel"
+
+    // Variables de usuario
+    private var currentUserId: Long = -1
+    private var currentUser: DatabaseHelper.User? = null
 
     private val dataTypes = listOf(
         "Ritmo Cardiaco",
@@ -73,6 +79,27 @@ class MainActivity : AppCompatActivity() {
         // Inicializar base de datos
         databaseHelper = DatabaseHelper(this)
 
+        // Obtener usuario actual
+        currentUserId = intent.getLongExtra("user_id", -1)
+        if (currentUserId == -1L) {
+            // Si no hay usuario, ir al login
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
+        }
+
+        currentUser = databaseHelper.getUserById(currentUserId)
+        if (currentUser == null) {
+            // Usuario no encontrado, ir al login
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
+        }
+
+        // Configurar ActionBar con el nombre del usuario
+        supportActionBar?.title = "Hola, ${currentUser!!.fullName}"
+        supportActionBar?.subtitle = "@${currentUser!!.username}"
+
         // Configurar RecyclerView
         setupRecyclerView()
         setupRecentRecyclerView()
@@ -103,6 +130,56 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_logout -> {
+                logout()
+                true
+            }
+            R.id.action_profile -> {
+                showUserProfile()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun logout() {
+        // Limpiar sesión
+        val sharedPrefs = getSharedPreferences("user_session", MODE_PRIVATE)
+        sharedPrefs.edit().clear().apply()
+
+        // Ir al login
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
+    private fun showUserProfile() {
+        val sb = StringBuilder()
+        sb.append("Perfil de Usuario\n\n")
+        sb.append("Nombre: ${currentUser?.fullName}\n")
+        sb.append("Usuario: ${currentUser?.username}\n")
+        sb.append("Email: ${currentUser?.email}\n")
+        sb.append("Registrado: ${formatDate(currentUser?.createdAt ?: 0)}\n")
+        sb.append("Datos guardados: ${databaseHelper.getDataCount(currentUserId)}")
+
+        binding.heartRateLabel.text = "Mi Perfil"
+        binding.heartRateValue.text = sb.toString()
+        binding.heartRateLabel.visibility = View.VISIBLE
+        binding.heartRateValue.visibility = View.VISIBLE
+        binding.dataRecyclerView.visibility = View.GONE
+        binding.recentDataRecyclerView.visibility = View.GONE
+        binding.connectionStatus.visibility = View.GONE
+        binding.backToMainButton.visibility = View.VISIBLE
+    }
+
     private fun setupRecyclerView() {
         dataAdapter = DataAdapter(emptyList())
         binding.dataRecyclerView.apply {
@@ -130,12 +207,11 @@ class MainActivity : AppCompatActivity() {
                 "Estrés" -> (prev + (-1..1).random()).coerceIn(range)
                 else -> (range as IntRange).random()
             }
-            currentSimulatedData[type] = newValue.toDouble() // Guardar como Double por compatibilidad, pero solo enteros
+            currentSimulatedData[type] = newValue.toDouble()
         }
     }
 
     private fun showSimulatedBlock() {
-        // Mostrar los datos simulados en la pantalla principal
         val sb = StringBuilder()
         for (type in dataTypes) {
             val value = currentSimulatedData[type]?.toInt() ?: 0
@@ -156,7 +232,7 @@ class MainActivity : AppCompatActivity() {
     private fun saveSimulatedDataToDB() {
         for (type in dataTypes) {
             val value = currentSimulatedData[type]?.toInt() ?: continue
-            databaseHelper.insertData(type, value.toDouble()) // Guardar como Double pero solo enteros
+            databaseHelper.insertData(type, value.toDouble(), currentUserId)
         }
     }
 
@@ -165,19 +241,27 @@ class MainActivity : AppCompatActivity() {
         val oxigeno = currentSimulatedData["Oxígeno en Sangre"]?.toInt() ?: 0
         val pasos = currentSimulatedData["Pasos"]?.toInt() ?: 0
         val estres = currentSimulatedData["Estrés"]?.toInt() ?: 0
-        databaseHelper.insertMedicion(ritmo, oxigeno, pasos, estres)
+        databaseHelper.insertMedicion(ritmo, oxigeno, pasos, estres, currentUserId)
     }
 
     private fun sendSimulatedDataToServer() {
         val json = JSONObject()
+
+        // Datos del usuario
+        json.put("user_id", currentUserId)
+        json.put("username", currentUser?.username ?: "unknown")
+        json.put("full_name", currentUser?.fullName ?: "Usuario")
+
+        // Datos de salud
         for (type in dataTypes) {
             val value = currentSimulatedData[type]?.toInt() ?: 0
-            json.put(type, value)
+            json.put(type.replace(" ", "_").lowercase(), value)
         }
 
-        // Agregar timestamp para mejor tracking
+        // Metadata
         json.put("timestamp", System.currentTimeMillis())
         json.put("device_id", "android_app")
+        json.put("app_version", "1.0")
 
         val client = OkHttpClient.Builder()
             .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
@@ -193,18 +277,19 @@ class MainActivity : AppCompatActivity() {
             .post(body)
             .addHeader("Content-Type", "application/json")
             .addHeader("Accept", "application/json")
+            .addHeader("User-ID", currentUserId.toString())
             .build()
 
         thread {
             try {
-                println("Enviando datos: ${json.toString()}")
+                println("Enviando datos del usuario ${currentUser?.username}: ${json.toString()}")
                 val response = client.newCall(request).execute()
 
                 runOnUiThread {
                     if (response.isSuccessful) {
                         val responseBody = response.body?.string()
                         println("Respuesta del servidor: $responseBody")
-                        Toast.makeText(this, "Datos enviados al servidor exitosamente", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Datos enviados exitosamente", Toast.LENGTH_SHORT).show()
                     } else {
                         val errorBody = response.body?.string()
                         println("Error HTTP ${response.code}: $errorBody")
@@ -212,24 +297,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 response.close()
-            } catch (e: java.net.ConnectException) {
-                println("Error de conexión: ${e.message}")
-                runOnUiThread {
-                    Toast.makeText(this, "No se puede conectar al servidor. Verifica la URL.", Toast.LENGTH_LONG).show()
-                }
-            } catch (e: java.net.SocketTimeoutException) {
-                println("Timeout: ${e.message}")
-                runOnUiThread {
-                    Toast.makeText(this, "Tiempo de espera agotado. Servidor lento.", Toast.LENGTH_LONG).show()
-                }
-            } catch (e: java.net.UnknownHostException) {
-                println("Host desconocido: ${e.message}")
-                runOnUiThread {
-                    Toast.makeText(this, "Servidor no encontrado. Verifica la URL.", Toast.LENGTH_LONG).show()
-                }
             } catch (e: Exception) {
-                println("Error general: ${e.message}")
-                e.printStackTrace()
+                println("Error al enviar datos: ${e.message}")
                 runOnUiThread {
                     Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
                 }
@@ -255,14 +324,14 @@ class MainActivity : AppCompatActivity() {
         binding.clearDataButton.setOnClickListener {
             clearAllData()
         }
+
         binding.historyButton?.setOnClickListener {
             showMedicionesHistory()
         }
     }
 
     private fun showDataTable() {
-        // Mostrar solo los datos de los 4 tipos en la tabla
-        val allData = databaseHelper.getAllData().filter { it.type in dataTypes }
+        val allData = databaseHelper.getAllData(currentUserId).filter { it.type in dataTypes }
         dataAdapter.updateData(allData)
         binding.dataRecyclerView.visibility = View.VISIBLE
         binding.recentDataRecyclerView.visibility = View.GONE
@@ -273,7 +342,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showMedicionesHistory() {
-        val lista = databaseHelper.getAllMediciones()
+        val lista = databaseHelper.getAllMediciones(currentUserId)
         val sb = StringBuilder()
         sb.append("Historial de Mediciones:\n\n")
         for (m in lista) {
@@ -323,8 +392,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        val dataList = databaseHelper.getAllData()
-        
+        val dataList = databaseHelper.getAllData(currentUserId)
+
         if (dataList.isEmpty()) {
             binding.emptyText.visibility = View.VISIBLE
             binding.dataRecyclerView.visibility = View.GONE
@@ -333,19 +402,18 @@ class MainActivity : AppCompatActivity() {
             binding.dataRecyclerView.visibility = View.VISIBLE
             dataAdapter.updateData(dataList)
         }
-        // Cuando se muestra la lista completa, ocultar recientes
         binding.recentDataRecyclerView.visibility = View.GONE
     }
 
     private fun loadRecentData() {
-        val dataList = databaseHelper.getAllData()
+        val dataList = databaseHelper.getAllData(currentUserId)
         val recentList = if (dataList.size > 3) dataList.takeLast(3).reversed() else dataList.reversed()
         recentDataAdapter.updateData(recentList)
         binding.recentDataRecyclerView.visibility = if (recentList.isEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun clearAllData() {
-        databaseHelper.clearAllData()
+        databaseHelper.clearAllData(currentUserId)
         Toast.makeText(this, getString(R.string.data_cleared), Toast.LENGTH_SHORT).show()
         loadData()
         loadRecentData()
@@ -355,7 +423,6 @@ class MainActivity : AppCompatActivity() {
         handler.post(object : Runnable {
             override fun run() {
                 val simulatedHeartRate = Random.nextInt(heartRateMin, heartRateMax + 1)
-                binding.heartRateValue.text = "$simulatedHeartRate bpm"
                 handler.postDelayed(this, heartRateInterval)
             }
         })
@@ -402,4 +469,4 @@ class MainActivity : AppCompatActivity() {
         handler.removeCallbacksAndMessages(null)
         updateTimer?.cancel()
     }
-} 
+}

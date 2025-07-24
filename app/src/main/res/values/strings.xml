@@ -13,4 +13,33 @@
     <string name="connected">Conectado a Galaxy Watch 5</string>
     <string name="not_connected">No conectado al reloj</string>
     <string name="bluetooth_off_notification">No conectado al reloj: Bluetooth apagado</string>
-</resources> 
+
+    <!-- Strings para Login -->
+    <string name="login_title">Iniciar Sesión</string>
+    <string name="register_title">Crear Cuenta</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="full_name">Nombre completo</string>
+    <string name="email">Correo electrónico</string>
+    <string name="login_button">Iniciar Sesión</string>
+    <string name="register_button">Registrarse</string>
+    <string name="create_account">Crear Cuenta</string>
+    <string name="already_have_account">Ya tengo cuenta</string>
+    <string name="welcome_back">Bienvenido de nuevo</string>
+    <string name="complete_registration">Completa tus datos para registrarte</string>
+
+    <!-- Strings para errores -->
+    <string name="error_empty_fields">Por favor, completa todos los campos</string>
+    <string name="error_passwords_dont_match">Las contraseñas no coinciden</string>
+    <string name="error_password_short">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="error_invalid_email">Ingresa un email válido</string>
+    <string name="error_user_exists">El nombre de usuario ya existe</string>
+    <string name="error_invalid_credentials">Usuario o contraseña incorrectos</string>
+    <string name="error_registration_failed">Error al registrar usuario</string>
+    <string name="success_registration">Usuario registrado exitosamente</string>
+
+    <!-- Strings para menú -->
+    <string name="action_logout">Cerrar Sesión</string>
+    <string name="action_profile">Mi Perfil</string>
+</resources>

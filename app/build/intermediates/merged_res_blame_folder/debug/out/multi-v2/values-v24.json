@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.datasimulator.app-mergeDebugResources-33:/values-v24/values-v24.xml",
+            "outputFile": "com.example.datasimulator.app-mergeDebugResources-35:/values-v24/values-v24.xml",
             "map": [
                 {
                     "source": "C:\\Users\\range\\.gradle\\caches\\9.0-milestone-1\\transforms\\e3b085e32c622bb431574bcebfaeee01\\transformed\\appcompat-1.6.1\\res\\values-v24\\values-v24.xml",

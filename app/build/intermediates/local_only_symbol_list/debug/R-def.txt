@@ -28,6 +28,7 @@ id dataRecyclerView
 id emptyText
 id heartRateLabel
 id heartRateValue
+id historyButton
 id recentDataRecyclerView
 id sendDataButton
 id subtitleText
@@ -56,3 +57,4 @@ string view_data
 style Theme.DataSimulator
 xml backup_rules
 xml data_extraction_rules
+xml network_security_config

@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:2:1-38:12
-INJECTED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:2:1-38:12
-INJECTED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:2:1-38:12
-INJECTED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:2:1-38:12
+ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:2:1-40:12
+INJECTED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:2:1-40:12
+INJECTED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:2:1-40:12
+INJECTED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:2:1-40:12
 MERGED from [androidx.databinding:viewbinding:8.2.0] C:\Users\range\.gradle\caches\9.0-milestone-1\transforms\9b8f36e24e0c12a467212c7f497688b3\transformed\viewbinding-8.2.0\AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\range\.gradle\caches\9.0-milestone-1\transforms\f250a361a93916fc27fd06bf1c0da1fd\transformed\material-1.11.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\range\.gradle\caches\9.0-milestone-1\transforms\c548f0f0c85a28b84d2a90d0bc0d4f92\transformed\constraintlayout-2.1.4\AndroidManifest.xml:2:1-11:12
@@ -64,25 +64,29 @@ uses-permission#android.permission.INTERNET
 ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:6:5-67
 	android:name
 		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:6:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:8:5-79
+	android:name
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:8:22-76
 uses-permission#android.permission.BLUETOOTH
-ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:8:5-68
+ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:10:5-68
 	android:name
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:8:22-65
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:10:22-65
 uses-permission#android.permission.BLUETOOTH_ADMIN
-ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:9:5-74
+ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:11:5-74
 	android:name
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:9:22-71
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:11:22-71
 uses-permission#android.permission.BLUETOOTH_CONNECT
-ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:10:5-76
+ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:12:5-76
 	android:name
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:10:22-73
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:12:22-73
 uses-permission#android.permission.POST_NOTIFICATIONS
-ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:12:5-77
+ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:14:5-77
 	android:name
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:12:22-74
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:14:22-74
 application
-ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:14:5-36:19
-INJECTED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:14:5-36:19
+ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:16:5-38:19
+INJECTED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:16:5-38:19
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\range\.gradle\caches\9.0-milestone-1\transforms\f250a361a93916fc27fd06bf1c0da1fd\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\range\.gradle\caches\9.0-milestone-1\transforms\f250a361a93916fc27fd06bf1c0da1fd\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\range\.gradle\caches\9.0-milestone-1\transforms\c548f0f0c85a28b84d2a90d0bc0d4f92\transformed\constraintlayout-2.1.4\AndroidManifest.xml:9:5-20
@@ -106,35 +110,39 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\range\.gradle\cach
 	android:supportsRtl
 		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:21:9-35
 	android:label
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:19:9-41
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:20:9-41
 	android:fullBackupContent
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:17:9-54
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:19:9-54
 	tools:targetApi
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:23:9-29
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:25:9-29
 	android:allowBackup
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:15:9-35
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:17:9-35
 	android:theme
 		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:22:9-51
+	android:networkSecurityConfig
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:24:9-69
 	android:dataExtractionRules
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:16:9-65
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:18:9-65
+	android:usesCleartextTraffic
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:23:9-44
 activity#com.example.datasimulator.MainActivity
-ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:25:9-35:20
+ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:27:9-37:20
 	android:exported
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:27:13-36
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:29:13-36
 	android:theme
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:28:13-55
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:30:13-55
 	android:name
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:26:13-41
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:28:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:30:13-33:29
+ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:32:13-35:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:31:17-69
+ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:33:17-69
 	android:name
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:31:25-66
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:33:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:32:17-77
+ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:34:17-77
 	android:name
-		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:32:27-74
+		ADDED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml:34:27-74
 uses-sdk
 INJECTED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\range\AndroidStudioProjects\AppMovil\app\src\main\AndroidManifest.xml

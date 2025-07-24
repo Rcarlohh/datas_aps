@@ -3312,6 +3312,7 @@ id heartRateLabel
 id heartRateValue
 id hide_ime_id
 id hideable
+id historyButton
 id home
 id homeAsUp
 id honorRequest
@@ -5257,3 +5258,4 @@ styleable ViewTransition android_id SharedValue SharedValueId clearsTag duration
 styleable include constraintSet
 xml backup_rules
 xml data_extraction_rules
+xml network_security_config

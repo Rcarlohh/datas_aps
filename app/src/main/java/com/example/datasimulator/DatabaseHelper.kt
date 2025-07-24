@@ -9,12 +9,17 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "DataSimulator.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val TABLE_NAME = "data_items"
         private const val COLUMN_ID = "id"
         private const val COLUMN_TYPE = "type"
         private const val COLUMN_VALUE = "value"
         private const val COLUMN_TIMESTAMP = "timestamp"
+        private const val TABLE_MEDICIONES = "mediciones"
+        private const val COLUMN_RITMO = "ritmo_cardiaco"
+        private const val COLUMN_OXIGENO = "oxigeno"
+        private const val COLUMN_PASOS = "pasos"
+        private const val COLUMN_ESTRES = "estres"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -27,10 +32,22 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             )
         """
         db.execSQL(createTable)
+        val createMediciones = """
+            CREATE TABLE $TABLE_MEDICIONES (
+                $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_RITMO INTEGER NOT NULL,
+                $COLUMN_OXIGENO INTEGER NOT NULL,
+                $COLUMN_PASOS INTEGER NOT NULL,
+                $COLUMN_ESTRES INTEGER NOT NULL,
+                $COLUMN_TIMESTAMP INTEGER NOT NULL
+            )
+        """
+        db.execSQL(createMediciones)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_MEDICIONES")
         onCreate(db)
     }
 
@@ -70,6 +87,50 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         }
         cursor.close()
         return dataList
+    }
+
+    fun insertMedicion(ritmo: Int, oxigeno: Int, pasos: Int, estres: Int): Long {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_RITMO, ritmo)
+            put(COLUMN_OXIGENO, oxigeno)
+            put(COLUMN_PASOS, pasos)
+            put(COLUMN_ESTRES, estres)
+            put(COLUMN_TIMESTAMP, System.currentTimeMillis())
+        }
+        return db.insert(TABLE_MEDICIONES, null, values)
+    }
+
+    data class Medicion(
+        val id: Long,
+        val ritmo: Int,
+        val oxigeno: Int,
+        val pasos: Int,
+        val estres: Int,
+        val timestamp: Long
+    )
+
+    fun getAllMediciones(): List<Medicion> {
+        val lista = mutableListOf<Medicion>()
+        val db = this.readableDatabase
+        val cursor = db.query(
+            TABLE_MEDICIONES,
+            null, null, null, null, null,
+            "$COLUMN_TIMESTAMP DESC"
+        )
+        with(cursor) {
+            while (moveToNext()) {
+                val id = getLong(getColumnIndexOrThrow(COLUMN_ID))
+                val ritmo = getInt(getColumnIndexOrThrow(COLUMN_RITMO))
+                val oxigeno = getInt(getColumnIndexOrThrow(COLUMN_OXIGENO))
+                val pasos = getInt(getColumnIndexOrThrow(COLUMN_PASOS))
+                val estres = getInt(getColumnIndexOrThrow(COLUMN_ESTRES))
+                val timestamp = getLong(getColumnIndexOrThrow(COLUMN_TIMESTAMP))
+                lista.add(Medicion(id, ritmo, oxigeno, pasos, estres, timestamp))
+            }
+        }
+        cursor.close()
+        return lista
     }
 
     fun clearAllData() {

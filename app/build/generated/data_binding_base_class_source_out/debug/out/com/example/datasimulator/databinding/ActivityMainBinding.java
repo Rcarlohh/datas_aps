@@ -48,6 +48,9 @@ public final class ActivityMainBinding implements ViewBinding {
   public final TextView heartRateValue;
 
   @NonNull
+  public final Button historyButton;
+
+  @NonNull
   public final RecyclerView recentDataRecyclerView;
 
   @NonNull
@@ -66,9 +69,10 @@ public final class ActivityMainBinding implements ViewBinding {
       @NonNull LinearLayout buttonContainer, @NonNull MaterialButton clearDataButton,
       @NonNull TextView connectionStatus, @NonNull RecyclerView dataRecyclerView,
       @NonNull TextView emptyText, @NonNull TextView heartRateLabel,
-      @NonNull TextView heartRateValue, @NonNull RecyclerView recentDataRecyclerView,
-      @NonNull MaterialButton sendDataButton, @NonNull TextView subtitleText,
-      @NonNull TextView titleText, @NonNull MaterialButton viewDataButton) {
+      @NonNull TextView heartRateValue, @NonNull Button historyButton,
+      @NonNull RecyclerView recentDataRecyclerView, @NonNull MaterialButton sendDataButton,
+      @NonNull TextView subtitleText, @NonNull TextView titleText,
+      @NonNull MaterialButton viewDataButton) {
     this.rootView = rootView;
     this.backToMainButton = backToMainButton;
     this.buttonContainer = buttonContainer;
@@ -78,6 +82,7 @@ public final class ActivityMainBinding implements ViewBinding {
     this.emptyText = emptyText;
     this.heartRateLabel = heartRateLabel;
     this.heartRateValue = heartRateValue;
+    this.historyButton = historyButton;
     this.recentDataRecyclerView = recentDataRecyclerView;
     this.sendDataButton = sendDataButton;
     this.subtitleText = subtitleText;
@@ -160,6 +165,12 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.historyButton;
+      Button historyButton = ViewBindings.findChildViewById(rootView, id);
+      if (historyButton == null) {
+        break missingId;
+      }
+
       id = R.id.recentDataRecyclerView;
       RecyclerView recentDataRecyclerView = ViewBindings.findChildViewById(rootView, id);
       if (recentDataRecyclerView == null) {
@@ -192,8 +203,8 @@ public final class ActivityMainBinding implements ViewBinding {
 
       return new ActivityMainBinding((ConstraintLayout) rootView, backToMainButton, buttonContainer,
           clearDataButton, connectionStatus, dataRecyclerView, emptyText, heartRateLabel,
-          heartRateValue, recentDataRecyclerView, sendDataButton, subtitleText, titleText,
-          viewDataButton);
+          heartRateValue, historyButton, recentDataRecyclerView, sendDataButton, subtitleText,
+          titleText, viewDataButton);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

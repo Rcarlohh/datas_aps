@@ -160,32 +160,78 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun saveMedicionToDB() {
+        val ritmo = currentSimulatedData["Ritmo Cardiaco"]?.toInt() ?: 0
+        val oxigeno = currentSimulatedData["Oxígeno en Sangre"]?.toInt() ?: 0
+        val pasos = currentSimulatedData["Pasos"]?.toInt() ?: 0
+        val estres = currentSimulatedData["Estrés"]?.toInt() ?: 0
+        databaseHelper.insertMedicion(ritmo, oxigeno, pasos, estres)
+    }
+
     private fun sendSimulatedDataToServer() {
         val json = JSONObject()
         for (type in dataTypes) {
             val value = currentSimulatedData[type]?.toInt() ?: 0
             json.put(type, value)
         }
-        val client = OkHttpClient()
+
+        // Agregar timestamp para mejor tracking
+        json.put("timestamp", System.currentTimeMillis())
+        json.put("device_id", "android_app")
+
+        val client = OkHttpClient.Builder()
+            .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+            .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+            .writeTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+            .build()
+
         val mediaType = "application/json; charset=utf-8".toMediaTypeOrNull()
         val body: RequestBody = json.toString().toRequestBody(mediaType)
+
         val request = Request.Builder()
             .url("http://3.145.62.106:9000/upload/")
             .post(body)
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Accept", "application/json")
             .build()
+
         thread {
             try {
+                println("Enviando datos: ${json.toString()}")
                 val response = client.newCall(request).execute()
+
                 runOnUiThread {
                     if (response.isSuccessful) {
-                        Toast.makeText(this, "Datos enviados al servidor", Toast.LENGTH_SHORT).show()
+                        val responseBody = response.body?.string()
+                        println("Respuesta del servidor: $responseBody")
+                        Toast.makeText(this, "Datos enviados al servidor exitosamente", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this, "Error al enviar datos al servidor", Toast.LENGTH_SHORT).show()
+                        val errorBody = response.body?.string()
+                        println("Error HTTP ${response.code}: $errorBody")
+                        Toast.makeText(this, "Error del servidor: ${response.code}", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch (e: Exception) {
+                response.close()
+            } catch (e: java.net.ConnectException) {
+                println("Error de conexión: ${e.message}")
                 runOnUiThread {
-                    Toast.makeText(this, "Error de conexión al servidor", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "No se puede conectar al servidor. Verifica la URL.", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: java.net.SocketTimeoutException) {
+                println("Timeout: ${e.message}")
+                runOnUiThread {
+                    Toast.makeText(this, "Tiempo de espera agotado. Servidor lento.", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: java.net.UnknownHostException) {
+                println("Host desconocido: ${e.message}")
+                runOnUiThread {
+                    Toast.makeText(this, "Servidor no encontrado. Verifica la URL.", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                println("Error general: ${e.message}")
+                e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -196,6 +242,7 @@ class MainActivity : AppCompatActivity() {
             simulateAllData()
             showSimulatedBlock()
             saveSimulatedDataToDB()
+            saveMedicionToDB()
             sendSimulatedDataToServer()
             Toast.makeText(this, getString(R.string.data_sent), Toast.LENGTH_SHORT).show()
         }
@@ -207,6 +254,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.clearDataButton.setOnClickListener {
             clearAllData()
+        }
+        binding.historyButton?.setOnClickListener {
+            showMedicionesHistory()
         }
     }
 
@@ -220,6 +270,34 @@ class MainActivity : AppCompatActivity() {
         binding.heartRateValue.visibility = View.GONE
         binding.connectionStatus.visibility = View.GONE
         binding.backToMainButton.visibility = View.VISIBLE
+    }
+
+    private fun showMedicionesHistory() {
+        val lista = databaseHelper.getAllMediciones()
+        val sb = StringBuilder()
+        sb.append("Historial de Mediciones:\n\n")
+        for (m in lista) {
+            sb.append("${formatDate(m.timestamp)} | ")
+            sb.append("Ritmo: ${m.ritmo} bpm, ")
+            sb.append("Oxígeno: ${m.oxigeno} %, ")
+            sb.append("Pasos: ${m.pasos}, ")
+            sb.append("Estrés: ${m.estres}\n")
+        }
+        if (lista.isEmpty()) sb.append("Sin registros")
+        binding.heartRateLabel.text = "Historial"
+        binding.heartRateValue.text = sb.toString()
+        binding.heartRateLabel.visibility = View.VISIBLE
+        binding.heartRateValue.visibility = View.VISIBLE
+        binding.dataRecyclerView.visibility = View.GONE
+        binding.recentDataRecyclerView.visibility = View.GONE
+        binding.connectionStatus.visibility = View.GONE
+        binding.backToMainButton.visibility = View.VISIBLE
+    }
+
+    private fun formatDate(timestamp: Long): String {
+        val date = java.util.Date(timestamp)
+        val format = java.text.SimpleDateFormat("dd/MM/yyyy HH:mm", java.util.Locale.getDefault())
+        return format.format(date)
     }
 
     private fun showMainScreen() {
